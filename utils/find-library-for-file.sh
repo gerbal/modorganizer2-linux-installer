@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-appid=$1
+desired_file=$1
 
 if [ -n "$STEAM_LIBRARY" ]; then
 	echo "$STEAM_LIBRARY"
@@ -13,11 +13,10 @@ function log_info() {
 
 script_root=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 
-steam_libraries=($("$script_root/list-steam-libraries.sh"))
-
-for libdir in "${steam_libraries[@]}"; do
-	compat_data="$libdir/steamapps/compatdata/$appid"
-	if [ -d "$compat_data" ]; then
+"$script_root/list-steam-libraries.sh" | \
+while read -r libdir; do
+	full_path="$libdir/steamapps/common/$desired_file"
+	if [ -f "$full_path" ]; then
 		log_info "game found in '$libdir'"
 		echo "$libdir"
 		exit 0
@@ -25,4 +24,3 @@ for libdir in "${steam_libraries[@]}"; do
 		log_info "game not found in '$libdir'"
 	fi
 done
-

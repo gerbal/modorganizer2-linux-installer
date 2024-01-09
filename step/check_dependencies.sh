@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 missing_deps=()
 
@@ -10,18 +10,8 @@ if [ -z "$(command -v curl)" ] && [ -z "$(command -v wget)" ]; then
 	missing_deps+=("curl or wget")
 fi
 
-if [ -z "$(command -v protontricks)" ]; then
-	if [ -n "$(command -v flatpak)" ]; then
-		if flatpak info com.github.Matoking.protontricks > /dev/null; then
-			using_flatpak_protontricks=1
-		else
-			missing_deps+=(protontricks)
-		fi
-	else
-		missing_deps+=(protontricks)
-	fi
-else
-	using_flatpak_protontricks=0
+if [ ! $("$utils/protontricks.sh" get-release) ]; then
+	missing_deps+=(protontricks)
 fi
 
 if [ -z "$(command -v zenity)" ]; then
@@ -37,6 +27,15 @@ fi
 
 if [ ! -f "$redirector/main.exe" ]; then
 	log_error "redirector binaries not found"
+	exit 1
+fi
+
+os_id=$("$utils/get_os_id.sh")
+
+if [ "$os_id" == "steamos" ] && [ "$("$utils/protontricks.sh" get-release)" != "flatpak" ]; then
+	log_error "Using non-flatpak Protontricks on SteamOS"
+	"$dialog" errorbox \
+		"Only Flatpak releases of Protontricks are supported on SteamOS.\nPlease install Protontricks through the Discover app and try again."
 	exit 1
 fi
 

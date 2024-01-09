@@ -22,10 +22,12 @@ The following requirements should be available out-of-the-box in most systems:
 
 All requirements should be readily available in your distribution's package manager.
 
+**Steam Deck users**: Protontricks must be installed through the Discover app.
+
 #### Installation steps
 
 1. Install the game you want to play on Steam;
-2. Download the the latest stable release [here](https://github.com/rockerbacon/modorganizer2-linux-installer/releases/download/4.3.0/mo2installer-4_3_0.tar.gz);
+2. Download the the latest stable release [here](https://github.com/rockerbacon/modorganizer2-linux-installer/releases/download/4.4.0/mo2installer-4.4.0.tar.gz);
 3. Extract the downloaded file;
 4. Open the extracted folder in a terminal and execute `./install.sh`;
 5. The installer will start and guide you through the rest of the process;
